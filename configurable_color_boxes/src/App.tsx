@@ -41,14 +41,15 @@ const App = () => {
   const [error, setError] = useState<string>("");
 
   const addBox = () => {
-    // if (!color || !width) {
-    //   setError("Every field is required");
-    //   return;
-    // }
+    if (!color || !width) {
+      setError("Every field is required");
+      return;
+    }
 
-    setData((prev) => [{ width: `${width}%`, color }, ...prev]);
+    setData((prev) => [...prev, { width: `${width}%`, color }]);
     setColor("");
     setWidth("");
+    setError("");
   };
 
   console.log(data);
@@ -80,7 +81,7 @@ const App = () => {
             />
           </label>
         </div>
-        {error && <p>{error}</p>}
+        {error && <p className="text-red-600 mt-2">{error}</p>}
         <button
           onClick={addBox}
           className="bg-black text-white mt-4 px-4 rounded-md font-medium py-1"
