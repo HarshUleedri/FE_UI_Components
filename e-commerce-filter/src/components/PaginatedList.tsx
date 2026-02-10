@@ -1,7 +1,7 @@
-import getPagination from "./getPagination";
+import { getpagination } from "../utils/getpagination";
 
-interface PaginationPropType {
-  products: {
+interface PaginatedListPropType {
+  productList: {
     id: number;
     title: string;
     description: string;
@@ -11,28 +11,42 @@ interface PaginationPropType {
     tags: string[];
     images: string[];
   }[];
-  current: number | string;
   total: number;
-  onPageChange: (value: number | string) => void;
+  currentPage: number;
+  changeCurrentPage: (data: number) => void;
 }
 
-const Pagination = ({
-  current,
+const PaginatedList = ({
+  productList,
+  changeCurrentPage,
+  currentPage,
   total,
-  onPageChange,
-  products,
-}: PaginationPropType) => {
-  const pages = getPagination({ total, current });
+}: PaginatedListPropType) => {
+  const totalNumberOfPages: number = Math.ceil(total / 10);
+
+  const range = getpagination(totalNumberOfPages, currentPage);
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      changeCurrentPage(currentPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    if (currentPage < totalNumberOfPages) {
+      changeCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
-    <div className=" w-full flex items-center flex-col   ">
-      {/* products */}
+    <div>
+      {/* Product List */}
       <div className="text-xl mb-8 text-black grid grid-cols md:grid-cols-3 lg:grid-cols-4   gap-4">
-        {products.length === 0 ? (
+        {productList.length === 0 ? (
           <p>No Product Found</p>
         ) : (
           <>
-            {products?.map((prod) => (
+            {productList?.map((prod) => (
               <div
                 className="shadow border border-gray-100 rounded-md space-y-2  px-4 py-2 "
                 key={prod.id}
@@ -65,7 +79,9 @@ const Pagination = ({
                 <div className="flex items-center  justify-between">
                   <p className="text-sm">
                     <span>Rating :</span>{" "}
-                    <span className="font-semibold">{prod.rating}⭐</span>
+                    <span className="font-semibold">
+                      {Math.ceil(prod.rating)}⭐
+                    </span>
                   </p>
                   <p className="text-sm">
                     {" "}
@@ -82,27 +98,37 @@ const Pagination = ({
           </>
         )}
       </div>
-      {/* pagimation */}
 
-      <div className="flex gap-2 items-center my-12">
-        {pages.map((page, idx) => {
-          return page === "..." ? (
-            <span key={idx} className="text-lg px-2">
-              . . .
-            </span>
-          ) : (
-            <span
-              onClick={() => onPageChange(page)}
-              className={`px-2 py-1 cursor-pointer rounded border border-gray-200 text-lg font-normal hover:underline hover:bg-gray-50 ${page === current && "bg-gray-200 font-semibold"}  `}
-              key={idx}
-            >
-              {page}
-            </span>
-          );
-        })}
+      {/* pagination */}
+      <div className=" text-lg flex items-center">
+        <button
+          onClick={prevPage}
+          className="px-2 py-1 border cursor-pointer  bg-black text-white"
+        >{`<`}</button>
+        <div>
+          {range.map((n, idx) => {
+            return n === "..." ? (
+              <span className="px-2 py-1 border " key={idx}>
+                ...
+              </span>
+            ) : (
+              <span
+                key={idx}
+                className={`px-2 py-1 border cursor-pointer hover:bg-gray-200 hover:underline ${currentPage === n && "bg-gray-300"}`}
+                onClick={() => changeCurrentPage(+n)}
+              >
+                {n}
+              </span>
+            );
+          })}
+        </div>
+        <button
+          onClick={nextPage}
+          className="px-2 py-1 border cursor-pointer bg-black text-white"
+        >{`>`}</button>
       </div>
     </div>
   );
 };
 
-export default Pagination;
+export default PaginatedList;
