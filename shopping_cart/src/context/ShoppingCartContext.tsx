@@ -1,17 +1,13 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { filterReducer, type FilterContextType } from "../utils/filterReducer";
-import {
-  shoppingCartReducer,
-  type shoppingCartAction,
-  type shoppingCartState,
-} from "../utils/shoppingCart";
 
 const shoppingCartContext = createContext<{
   filterState: FilterContextType;
   filterDispatch: React.Dispatch<any>;
-  shoppingCartState: shoppingCartState;
-  shoppingCartDispatch: React.Dispatch<shoppingCartAction>;
 } | null>(null);
+
+
+
 const ShoppingCartContextProvider = ({
   children,
 }: {
@@ -23,23 +19,10 @@ const ShoppingCartContextProvider = ({
     rating: 0,
     inStock: "In Stock",
   });
-
-  const [shoppingCartState, shoppingCartDispatch] = useReducer(
-    shoppingCartReducer,
-    {
-      cart: [],
-    },
-  );
+  
 
   return (
-    <shoppingCartContext.Provider
-      value={{
-        filterState,
-        filterDispatch,
-        shoppingCartState,
-        shoppingCartDispatch,
-      }}
-    >
+    <shoppingCartContext.Provider value={{ filterState, filterDispatch }}>
       {children}
     </shoppingCartContext.Provider>
   );

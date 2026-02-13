@@ -3,7 +3,6 @@ import AppLayout from "./layout/AppLayout";
 import Home from "./pages/Home/Home";
 import NotFound from "./components/NotFound";
 import ShoppingCartContextProvider from "./context/ShoppingCartContext";
-import Cart from "./pages/Cart/Cart";
 
 const router = createBrowserRouter([
   {
@@ -13,10 +12,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/cart",
-        element: <Cart />,
       },
     ],
   },
