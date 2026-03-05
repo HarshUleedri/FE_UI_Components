@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SuggestionList from "./SuggestionList";
 
 interface AutoCompletePropType {
   fetchData: (input: string) => Promise<Response>;
@@ -9,12 +10,12 @@ interface AutoCompletePropType {
   dataKey?: keyof Recipe;
   customLoader: React.ReactNode;
 }
-type Recipe = {
+export type Recipe = {
   id: number;
   name: string;
 };
 
-type RecipeResponse = {
+export type RecipeResponse = {
   recipes: Recipe[];
 };
 
@@ -80,15 +81,13 @@ const AutoComplete = ({
       {(suggestionList.length > 0 || isLoading || error) && (
         <ul className="absolute top-full mt-2 py-2 w-full max-h-96 overflow-y-auto left-0 rounded shadow border border-gray-100">
           {suggestionList.map((item) => {
-            const currentSuggestion = dataKey ? item[dataKey] : item.name;
-
             return (
-              <li
-                onClick={() => handleOnClick(String(currentSuggestion))}
-                className="px-4 py-1 hover:bg-gray-100 text-base font-medium"
-              >
-                {currentSuggestion}
-              </li>
+              <SuggestionList
+                onClick={handleOnClick}
+                dataKey={dataKey}
+                highlight={inputValue}
+                suggestion={item}
+              />
             );
           })}
 
