@@ -5,6 +5,8 @@ interface SuggestionListPropType {
   onClick: (data: string) => void;
   suggestion: Recipe;
   dataKey?: keyof Recipe;
+  selectedIndex: number;
+  index: number;
 }
 
 const SuggestionList = ({
@@ -12,6 +14,8 @@ const SuggestionList = ({
   highlight,
   onClick,
   dataKey,
+  selectedIndex,
+  index,
 }: SuggestionListPropType) => {
   const currentSuggestion = dataKey ? suggestion[dataKey] : suggestion.name;
 
@@ -34,7 +38,11 @@ const SuggestionList = ({
   return (
     <li
       onClick={() => onClick(String(currentSuggestion))}
-      className="px-4 py-1 hover:bg-gray-100 text-base font-medium"
+      className={`px-4 py-1 hover:bg-gray-100 text-base font-medium ${selectedIndex === index && "bg-gray-100"}`}
+      id={`suggestion-${index}`}
+      aria-selected={selectedIndex === index}
+      key={index}
+      role="option"
     >
       {highlightInputValue(String(currentSuggestion), highlight)}
     </li>

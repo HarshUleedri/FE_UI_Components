@@ -1,0 +1,69 @@
+[
+  {
+    "id": "1",
+    "content": "This is the first top-level comment. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error ea consequuntur recusandae unde consectetur ut eveniet cumque quidem, ipsam blanditiis. Placeat repellendus labore, necessitatibus cumque consequatur perspiciatis atque illo amet nihil quae sapiente. Error explicabo voluptas deleniti incidunt! Maxime odit ducimus quibusdam dignissimos quas animi quos tempore sit facilis distinctio!",
+    "vote": 12,
+    "timestamp": "2026-05-11T10:00:00Z",
+    "replies": [
+      {
+        "id": "1-1",
+        "content": "This is a reply to the first comment.",
+        "vote": 5,
+        "timestamp": "2026-05-11T10:05:00Z",
+        "replies": [
+          {
+            "id": "1-1-1",
+            "content": "Nested reply level 2.",
+            "vote": 2,
+            "timestamp": "2026-05-11T10:07:00Z",
+            "replies": []
+          },
+          {
+            "id": "1-1-2",
+            "content": "Another nested reply.",
+            "vote": 1,
+            "timestamp": "2026-05-11T10:09:00Z",
+            "replies": [
+              {
+                "id": "1-1-2-1",
+                "content": "Level 3 nested comment.",
+                "vote": 0,
+                "timestamp": "2026-05-11T10:12:00Z",
+                "replies": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1-2",
+        "content": "Second reply to first comment.",
+        "vote": 3,
+        "timestamp": "2026-05-11T10:15:00Z",
+        "replies": []
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "content": "Second top-level comment.",
+    "vote": 8,
+    "timestamp": "2026-05-11T11:00:00Z",
+    "replies": [
+      {
+        "id": "2-1",
+        "content": "Reply to second comment.",
+        "vote": 4,
+        "timestamp": "2026-05-11T11:10:00Z",
+        "replies": []
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "content": "Third top-level comment with no replies.",
+    "vote": 2,
+    "timestamp": "2026-05-11T12:00:00Z",
+    "replies": []
+  }
+]
