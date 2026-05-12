@@ -1,5 +1,7 @@
 import { useState } from "react";
 import type { CommentsType } from "../App";
+import { AnimatePresence, motion } from "motion/react";
+import { div } from "motion/react-client";
 
 const Comments = ({
   comment,
@@ -43,6 +45,7 @@ const Comments = ({
   const cancelEdit = () => {
     setIsEdit(false);
     setEditCommentData("");
+    setEditError("");
   };
   const deleteComment = (commentId: string) => {
     onDelete(commentId);
@@ -56,64 +59,90 @@ const Comments = ({
     onEdit(editCommentData, commentId);
     setEditCommentData("");
     setIsEdit(false);
+    setEditError("");
   };
   return (
     <>
       <div className="p-4 rounded-md bg-gray-100">
-        {!isEdit ? (
-          <div className="w-full  p-4 mb-4 0 bg-neutral-50/80 border border-neutral-200 rounded-2xl ">
-            <p className="text-base mb-4 text-neutral-800 wrap-break-word w-11/12 ">
-              {comment.content}
-            </p>
-            <div className="flex justify-between items-center">
-              <div className="flex gap-4">
-                <p className="text-emerald-600   rounded  font-bold">
-                  votes : <span className="text-xs">{comment.vote}</span>
-                </p>
-                <p className="text-neutral-400   rounded  font-medium">
-                  replies{" "}
-                  <span className="text-xs">{comment.replies.length}</span>
-                </p>
-              </div>
-              <p className="text-neutral-400 text-xs tracking-tight font-medium">
-                {new Date(comment.timestamp).toLocaleString("US-en", {
-                  month: "short",
-                  day: "numeric",
-                  year: "2-digit",
-                })}
+        <motion.div
+          layoutId={`text-${comment.id}`}
+          className="w-full  p-4 mb-4 0 bg-neutral-50/80 border border-neutral-200 rounded-2xl "
+        >
+          <p className="text-base mb-4 text-neutral-800 wrap-break-word w-11/12 ">
+            {comment.content}
+          </p>
+          <div className="flex justify-between items-center">
+            <div className="flex gap-4">
+              <p className="text-emerald-600   rounded  font-bold">
+                votes : <span className="text-xs">{comment.vote}</span>
+              </p>
+              <p className="text-neutral-400   rounded  font-medium">
+                replies{" "}
+                <span className="text-xs">{comment.replies.length}</span>
               </p>
             </div>
+            <p className="text-neutral-400 text-xs tracking-tight font-medium">
+              {new Date(comment.timestamp).toLocaleString("US-en", {
+                month: "short",
+                day: "numeric",
+                year: "2-digit",
+              })}
+            </p>
           </div>
-        ) : (
-          <div className="flex flex-col  mb-4 gap-2 border-b pb-2 border-neutral-200   ">
-            <textarea
-              value={editCommentData}
-              onChange={handleChange}
-              rows={3}
-              placeholder="Comment"
-              className="text-base bg-white w-full outline-none focus:ring-1 border border-neutral-200 focus:ring-neutral-200 p-4 rounded-xl "
-            />
-            {editError && (
-              <p className="text-red-600 text-xs font-medium">{editError}</p>
-            )}
-            <div className="self-end space-x-2">
-              <button
-                type="submit"
-                onClick={() => saveEditComment(comment.id)}
-                className="px-2 py-1 text-xs font-medium w-fit  rounded-lg tracking-wide cursor-pointer text-neutral-100 bg-neutral-700"
+        </motion.div>
+        <AnimatePresence>
+          {isEdit && (
+            <div className="fixed inset-0  bg-black/80 backdrop-blur-md  flex items-center justify-center w-full ">
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  scale: 0.9,
+                  filter: "blur(10px)",
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  filter: "blur(0px)",
+                }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut",
+                }}
+                layoutId={`text-${comment.id}`}
+                className="flex flex-col  mb-4  max-w-1/2 w-full bg-neutral-200  lg:p-8 rounded-lg h-fit  gap-2 border-b pb-2 border-neutral-200   "
               >
-                save edit
-              </button>
-              <button
-                type="submit"
-                onClick={cancelEdit}
-                className="px-2 py-1 text-xs font-medium w-fit sd rounded-lg tracking-wide cursor-pointer text-neutral-100 bg-red-800"
-              >
-                cancel
-              </button>
+                <textarea
+                  value={editCommentData}
+                  onChange={handleChange}
+                  rows={6}
+                  placeholder="Comment"
+                  className="text-base  bg-white w-full outline-none focus:ring-1 border border-neutral-200 focus:ring-neutral-200 p-4 rounded-xl "
+                />
+                {editError && (
+                  <p className="text-red-600 px-4 text-xs font-medium">
+                    {editError}
+                  </p>
+                )}
+                <div className="self-end space-x-2">
+                  <button
+                    type="submit"
+                    onClick={() => saveEditComment(comment.id)}
+                    className="px-4 py-2 text-sm font-medium w-fit  rounded-lg tracking-wide cursor-pointer text-neutral-100 bg-neutral-700"
+                  >
+                    Save edit
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={cancelEdit}
+                    className="px-4 py-2 text-sm font-medium w-fit sd rounded-lg tracking-wide cursor-pointer text-neutral-100 bg-red-800"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </motion.div>
             </div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
         <div className="flex items-center gap-4">
           <button
             type="submit"
