@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { CommentsType } from "../App";
 import { AnimatePresence, motion } from "motion/react";
-import { div } from "motion/react-client";
 
 const Comments = ({
   comment,
